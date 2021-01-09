@@ -66,6 +66,9 @@
 
     <script type="text/javascript">
 
+        var plotNew = new Chart(document.getElementById("myChart").getContext('2d'))
+        plotNew.destroy();
+
         let dataPoints = [{
             x: 0.00,
             y: 1.00
@@ -133,7 +136,11 @@
                     };
                 });
 
-                new Chart(document.getElementById("myChart").getContext('2d'), {
+                plot.destroy();
+                plotNew.destroy();
+
+                // Generated plot
+                plotNew = new Chart(document.getElementById("myChart").getContext('2d'), {
 
                     type: 'scatter',
                     data: {
@@ -149,6 +156,11 @@
                         }]
                     },
                     options: {
+                        tooltips: { enabled: false },
+                        hover: { mode: null },
+                        animation: {
+                            duration: 0
+                        },
                         animation: {
                             duration: 0
                         },
@@ -160,7 +172,7 @@
                                 },
                                 ticks: {
                                     min: 0,
-                                    max: 250
+                                    max: 200
                                 }
                             }],
                             xAxes: [{
@@ -179,7 +191,8 @@
             }
         })
 
-        new Chart(document.getElementById("myChart").getContext('2d'), {
+        // Initial plot
+        var plot = new Chart(document.getElementById("myChart").getContext('2d'), {
 
             type: 'scatter',
             data: {
@@ -195,6 +208,11 @@
                 }]
             },
             options: {
+                tooltips: { enabled: false },
+                hover: { mode: null },
+                animation: {
+                    duration: 0
+                },
                 scales: {
                     yAxes: [{
                         scaleLabel: {
@@ -203,7 +221,7 @@
                         },
                         ticks: {
                             min: 0,
-                            max: 250
+                            max: 200
                         }
                     }],
                     xAxes: [{
