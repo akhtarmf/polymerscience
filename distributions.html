@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Polymer Science: Distributions</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/0.5.7/chartjs-plugin-annotation.js"></script>
+</head>
+
+<body>
+
+    <!-- Header -->
+
+    <img src="https://static.wixstatic.com/media/c6776b_cfa98697877f47a58e56a8f9ea16737e~mv2.png"
+        style="float:right; width:25%; height: 25%">
+
+    <!-- Dropdown Navigation -->
+
+    <select id="chartType"
+        style="border: none; padding: 10px 10px; text-align: center; font-variant:small-caps; font-family: sans-serif; font-size: medium; font-weight: 500">
+        <option value="mono">monodisperse, pdi = 1.01</option>
+        <option value="norm">gaussian, pdi = 1.93</option>
+        <option value="normL">right skew gaussian, pdi = 1.36</option>
+        <option value="normR">left skew gaussian, pdi = 1.79</option>
+        <option value="bimod">bimodal, pdi = 3.41</option>
+        <option value="poly">polymodal, pdi = 2.45</option>
+    </select>
+
+    <!-- ChartJS 'Bar'/'Line' -->
+
+    <canvas id="myChart" width="800" height="450"></canvas>
+
+    <img src="https://static.wixstatic.com/media/c6776b_fd904ab717354645a26026a817af931a~mv2.png"
+        style="width:75%; height: 75%; padding-top: 25px;" />
+
+
+    <!-- ChartJS 'Bar'/'Line' JavaScript-->
+
+    <script type="text/javascript">
+
+        let xLabels = [
+            "100", "150", "225", "338", "506", "759", "1139", "1709", "2563", "3844", "5767", "8650", "12975", "19462", "29193", "43789", "65684", "98526", "147789", "221684", "332526"
+        ];
+
+        var ctx = document.getElementById("myChart").getContext('2d');
+
+        var data = {
+            'mono': {
+                type: 'bar',
+                data: {
+                    datasets: [{
+                        label: 'Bar',
+                        data: [3.827E-131,
+                            2.3393E-105,
+                            2.76047E-82,
+                            6.28836E-62,
+                            2.76535E-44,
+                            2.3476E-29,
+                            3.8473E-17,
+                            1.21716E-07,
+                            0.743359757,
+                            8764.150247,
+                            199471.1402,
+                            8764.150247,
+                            0.743359757,
+                            1.21716E-07,
+                            3.8473E-17,
+                            2.3476E-29,
+                            2.76535E-44,
+                            6.28836E-62,
+                            2.76047E-82,
+                            2.3393E-105,
+                            3.827E-131
+                        ],
+                    }, {
+                        label: 'Line',
+                        data: [3.827E-131,
+                            2.3393E-105,
+                            2.76047E-82,
+                            6.28836E-62,
+                            2.76535E-44,
+                            2.3476E-29,
+                            3.8473E-17,
+                            1.21716E-07,
+                            0.743359757,
+                            8764.150247,
+                            199471.1402,
+                            8764.150247,
+                            0.743359757,
+                            1.21716E-07,
+                            3.8473E-17,
+                            2.3476E-29,
+                            2.76535E-44,
+                            6.28836E-62,
+                            2.76047E-82,
+                            2.3393E-105,
+                            3.827E-131
+                        ],
+                        type: 'line',
+                        fill: false,
+                        borderColor: "#000000",
+                        borderWidth: 1
+                    }],
+                    labels: xLabels
+                },
+                options: {
+                    annotation: {
+                        annotations: [
+                            {
+                                drawTime: "afterDatasetsDraw",
+                                type: "line",
+                                mode: "vertical",
+                                scaleID: "x-axis-0",
+                                value: 10.00,
+                                borderWidth: 2,
+                                borderColor: "#7A003C",
+                                label: {
+                                    content: 'Mn ≈ Mw ≈ Mz ≈ 6,000',
+                                    enabled: true,
+                                    position: "top",
+                                    click(context) {
+                                        console.log(context);
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'N (mol)'
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'MW'
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: false
+                    },
+                }
+            },
+            'norm': {
+                type: 'bar',
+                data: {
+                    datasets: [{
+                        label: 'Bar',
+                        data: [0.148671951,
+                            1.598374111,
+                            13.38302258,
+                            87.2682695,
+                            443.1848412,
+                            1752.830049,
+                            5399.096651,
+                            12951.75957,
+                            24197.07245,
+                            35206.53268,
+                            39894.22804,
+                            35206.53268,
+                            24197.07245,
+                            12951.75957,
+                            5399.096651,
+                            1752.830049,
+                            443.1848412,
+                            87.2682695,
+                            13.38302258,
+                            1.598374111,
+                            0.148671951
+                        ],
+                    }, {
+                        label: 'Line',
+                        data: [0.148671951,
+                            1.598374111,
+                            13.38302258,
+                            87.2682695,
+                            443.1848412,
+                            1752.830049,
+                            5399.096651,
+                            12951.75957,
+                            24197.07245,
+                            35206.53268,
+                            39894.22804,
+                            35206.53268,
+                            24197.07245,
+                            12951.75957,
+                            5399.096651,
+                            1752.830049,
+                            443.1848412,
+                            87.2682695,
+                            13.38302258,
+                            1.598374111,
+                            0.148671951
+                        ],
+                        type: 'line',
+                        fill: false,
+                        borderColor: "#000000",
+                        borderWidth: 1
+                    }],
+                    labels: xLabels
+                },
+                options: {
+                    annotation: {
+                        annotations: [
+                            {
+                                drawTime: "afterDatasetsDraw",
+                                type: "line",
+                                mode: "vertical",
+                                scaleID: "x-axis-0",
+                                value: 10.9,
+                                borderWidth: 1,
+                                borderColor: "#7A003C",
+                                label: {
+                                    content: 'Mn = 8,011',
+                                    enabled: true,
+                                    position: "top",
+                                    click(context) {
+                                        console.log(context);
+                                    }
+                                }
+                            }, {
+                                drawTime: "afterDatasetsDraw",
+                                type: "line",
+                                mode: "vertical",
+                                scaleID: "x-axis-0",
+                                value: 12.5,
+                                borderWidth: 1,
+                                borderColor: "#7A003C",
+                                label: {
+                                    content: 'Mw = 15,462',
+                                    enabled: true,
+                                    yAdjust: 25,
+                                    position: "top",
+                                    click(context) {
+                                        console.log(context);
+                                    }
+                                }
+                            }, {
+                                drawTime: "afterDatasetsDraw",
+                                type: "line",
+                                mode: "vertical",
+                                scaleID: "x-axis-0",
+                                value: 14,
+                                borderWidth: 1,
+                                borderColor: "#7A003C",
+                                label: {
+                                    content: 'Mz = 29,785',
+                                    enabled: true,
+                                    yAdjust: 50,
+                                    position: "top",
+                                    click(context) {
+                                        console.log(context);
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'N (mol)'
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'MW'
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            },
+            'normL': {
+                type: 'bar',
+                data: {
+                    datasets: [{
+                        label: 'Bar',
+                        data: [1.02798E-13,
+                            8.16624E-12,
+                            5.05227E-10,
+                            2.43432E-08,
+                            9.13472E-07,
+                            2.66956E-05,
+                            0.000607588,
+                            0.01076976,
+                            0.148671951,
+                            1.598374111,
+                            13.38302258,
+                            87.2682695,
+                            443.1848412,
+                            1752.830049,
+                            5399.096651,
+                            12951.75957,
+                            24197.07245,
+                            35206.53268,
+                            39894.22804,
+                            35206.53268,
+                            24197.07245
+                        ],
+                    }, {
+                        label: 'Line',
+                        data: [1.02798E-13,
+                            8.16624E-12,
+                            5.05227E-10,
+                            2.43432E-08,
+                            9.13472E-07,
+                            2.66956E-05,
+                            0.000607588,
+                            0.01076976,
+                            0.148671951,
+                            1.598374111,
+                            13.38302258,
+                            87.2682695,
+                            443.1848412,
+                            1752.830049,
+                            5399.096651,
+                            12951.75957,
+                            24197.07245,
+                            35206.53268,
+                            39894.22804,
+                            35206.53268,
+                            24197.07245
+                        ],
+                        type: 'line',
+                        fill: false,
+                        borderColor: "#000000",
+                        borderWidth: 1
+                    }],
+                    labels: xLabels
+                },
+                options: {
+                    annotation: {
+                        annotations: [
+                            {
+                                drawTime: "afterDatasetsDraw",
+                                type: "line",
+                                mode: "vertical",
+                                scaleID: "x-axis-0",
+                                value: 18.05,
+                                borderWidth: 1,
+                                borderColor: "#7A003C",
+                                label: {
+                                    content: 'Mn = 153,723',
+                                    enabled: true,
+                                    position: "top",
+                                    click(context) {
+                                        console.log(context);
+                                    }
+                                }
+                            }, {
+                                drawTime: "afterDatasetsDraw",
+                                type: "line",
+                                mode: "vertical",
+                                scaleID: "x-axis-0",
+                                value: 18.75,
+                                borderWidth: 1,
+                                borderColor: "#7A003C",
+                                label: {
+                                    content: 'Mw = 208,681',
+                                    enabled: true,
+                                    yAdjust: 25,
+                                    position: "top",
+                                    click(context) {
+                                        console.log(context);
+                                    }
+                                }
+                            }, {
+                                drawTime: "afterDatasetsDraw",
+                                type: "line",
+                                mode: "vertical",
+                                scaleID: "x-axis-0",
+                                value: 19.5,
+                                borderWidth: 1,
+                                borderColor: "#7A003C",
+                                label: {
+                                    content: 'Mz = 250,943',
+                                    enabled: true,
+                                    yAdjust: 50,
+                                    position: "top",
+                                    click(context) {
+                                        console.log(context);
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'N (mol)'
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'MW'
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            },
+            'normR': {
+                type: 'bar',
+                data: {
+                    datasets: [{
+                        label: 'Bar',
+                        data: [24197.07245,
+                            35206.53268,
+                            39894.22804,
+                            35206.53268,
+                            24197.07245,
+                            12951.75957,
+                            5399.096651,
+                            1752.830049,
+                            443.1848412,
+                            87.2682695,
+                            13.38302258,
+                            1.598374111,
+                            0.148671951,
+                            0.01076976,
+                            0.000607588,
+                            2.66956E-05,
+                            9.13472E-07,
+                            2.43432E-08,
+                            5.05227E-10,
+                            8.16624E-12,
+                            1.02798E-13
+                        ],
+                    }, {
+                        label: 'Line',
+                        data: [24197.07245,
+                            35206.53268,
+                            39894.22804,
+                            35206.53268,
+                            24197.07245,
+                            12951.75957,
+                            5399.096651,
+                            1752.830049,
+                            443.1848412,
+                            87.2682695,
+                            13.38302258,
+                            1.598374111,
+                            0.148671951,
+                            0.01076976,
+                            0.000607588,
+                            2.66956E-05,
+                            9.13472E-07,
+                            2.43432E-08,
+                            5.05227E-10,
+                            8.16624E-12,
+                            1.02798E-13
+                        ],
+                        type: 'line',
+                        fill: false,
+                        borderColor: "#000000",
+                        borderWidth: 1
+                    }],
+                    labels: xLabels
+                },
+                options: {
+                    annotation: {
+                        annotations: [
+                            {
+                                drawTime: "afterDatasetsDraw",
+                                type: "line",
+                                mode: "vertical",
+                                scaleID: "x-axis-0",
+                                value: 3.05,
+                                borderWidth: 1,
+                                borderColor: "#7A003C",
+                                label: {
+                                    content: 'Mn = 342',
+                                    enabled: true,
+                                    position: "top",
+                                    click(context) {
+                                        console.log(context);
+                                    }
+                                }
+                            }, {
+                                drawTime: "afterDatasetsDraw",
+                                type: "line",
+                                mode: "vertical",
+                                scaleID: "x-axis-0",
+                                value: 4.4,
+                                borderWidth: 1,
+                                borderColor: "#7A003C",
+                                label: {
+                                    content: 'Mw = 614',
+                                    enabled: true,
+                                    yAdjust: 25,
+                                    position: "top",
+                                    click(context) {
+                                        console.log(context);
+                                    }
+                                }
+                            }, {
+                                drawTime: "afterDatasetsDraw",
+                                type: "line",
+                                mode: "vertical",
+                                scaleID: "x-axis-0",
+                                value: 6.05,
+                                borderWidth: 1,
+                                borderColor: "#7A003C",
+                                label: {
+                                    content: 'Mz = 1,167',
+                                    yAdjust: 50,
+                                    enabled: true,
+                                    position: "top",
+                                    click(context) {
+                                        console.log(context);
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'N (mol)'
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'MW'
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            },
+            'bimod': {
+                type: 'bar',
+                data: {
+                    datasets: [{
+                        label: 'Bar',
+                        data: [2699.548326,
+                            6475.879783,
+                            12098.53623,
+                            17603.26634,
+                            19947.11402,
+                            17603.26634,
+                            12098.53623,
+                            6475.879783,
+                            2699.548326,
+                            876.4150247,
+                            379.8662008,
+                            874.0629698,
+                            1799.698884,
+                            3315.904626,
+                            5467.002489,
+                            8065.690817,
+                            10648.26685,
+                            12579.44092,
+                            13298.07601,
+                            12579.44092,
+                            10648.26685
+                        ],
+                    }, {
+                        label: 'Line',
+                        data: [2699.548326,
+                            6475.879783,
+                            12098.53623,
+                            17603.26634,
+                            19947.11402,
+                            17603.26634,
+                            12098.53623,
+                            6475.879783,
+                            2699.548326,
+                            876.4150247,
+                            379.8662008,
+                            874.0629698,
+                            1799.698884,
+                            3315.904626,
+                            5467.002489,
+                            8065.690817,
+                            10648.26685,
+                            12579.44092,
+                            13298.07601,
+                            12579.44092,
+                            10648.26685
+                        ],
+                        type: 'line',
+                        fill: false,
+                        borderColor: "#000000",
+                        borderWidth: 1
+                    }],
+                    labels: xLabels
+                },
+                options: {
+                    annotation: {
+                        annotations: [
+                            {
+                                drawTime: "afterDatasetsDraw",
+                                type: "line",
+                                mode: "vertical",
+                                scaleID: "x-axis-0",
+                                value: 15.75,
+                                borderWidth: 1,
+                                borderColor: "#7A003C",
+                                label: {
+                                    content: 'Mn = 61,226',
+                                    enabled: true,
+                                    position: "top",
+                                    click(context) {
+                                        console.log(context);
+                                    }
+                                }
+                            }, {
+                                drawTime: "afterDatasetsDraw",
+                                type: "line",
+                                mode: "vertical",
+                                scaleID: "x-axis-0",
+                                value: 18.75,
+                                borderWidth: 1,
+                                borderColor: "#7A003C",
+                                label: {
+                                    content: 'Mw = 208,564',
+                                    enabled: true,
+                                    yAdjust: 25,
+                                    position: "top",
+                                    click(context) {
+                                        console.log(context);
+                                    }
+                                }
+                            }, {
+                                drawTime: "afterDatasetsDraw",
+                                type: "line",
+                                mode: "vertical",
+                                scaleID: "x-axis-0",
+                                value: 19.3,
+                                borderWidth: 1,
+                                borderColor: "#7A003C",
+                                label: {
+                                    content: 'Mz = 258,081',
+                                    enabled: true,
+                                    yAdjust: 50,
+                                    position: "top",
+                                    click(context) {
+                                        console.log(context);
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'N (mol)'
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'MW'
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            },
+            'poly': {
+                type: 'bar',
+                data: {
+                    datasets: [{
+                        label: 'Bar',
+                        data: [13.38302258,
+                            443.1848412,
+                            5399.096651,
+                            24197.07245,
+                            39894.22804,
+                            24197.07245,
+                            5399.096651,
+                            190.7270561,
+                            1791.562424,
+                            8873.666774,
+                            23175.32422,
+                            31915.38243,
+                            23175.32422,
+                            8873.666774,
+                            39894.22804,
+                            24197.07245,
+                            5399.096651,
+                            443.1848412,
+                            13.38302258,
+                            0.148671951,
+                            0.000607588
+                        ],
+                    }, {
+                        label: 'Line',
+                        data: [13.38302258,
+                            443.1848412,
+                            5399.096651,
+                            24197.07245,
+                            39894.22804,
+                            24197.07245,
+                            5399.096651,
+                            190.7270561,
+                            1791.562424,
+                            8873.666774,
+                            23175.32422,
+                            31915.38243,
+                            23175.32422,
+                            8873.666774,
+                            39894.22804,
+                            24197.07245,
+                            5399.096651,
+                            443.1848412,
+                            13.38302258,
+                            0.148671951,
+                            0.000607588
+                        ],
+                        type: 'line',
+                        fill: false,
+                        borderColor: "#000000",
+                        borderWidth: 1
+                    }],
+                    labels: xLabels
+                },
+                options: {
+                    annotation: {
+                        annotations: [
+                            {
+                                drawTime: "afterDatasetsDraw",
+                                type: "line",
+                                mode: "vertical",
+                                scaleID: "x-axis-0",
+                                value: 12.1,
+                                borderWidth: 1,
+                                borderColor: "#7A003C",
+                                label: {
+                                    content: 'Mn = 13462',
+                                    enabled: true,
+                                    position: "top",
+                                    click(context) {
+                                        console.log(context);
+                                    }
+                                }
+                            }, {
+                                drawTime: "afterDatasetsDraw",
+                                type: "line",
+                                mode: "vertical",
+                                scaleID: "x-axis-0",
+                                value: 14.2,
+                                borderWidth: 1,
+                                borderColor: "#7A003C",
+                                label: {
+                                    content: 'Mw = 33018',
+                                    enabled: true,
+                                    yAdjust: 25,
+                                    position: "top",
+                                    click(context) {
+                                        console.log(context);
+                                    }
+                                }
+                            }, {
+                                drawTime: "afterDatasetsDraw",
+                                type: "line",
+                                mode: "vertical",
+                                scaleID: "x-axis-0",
+                                value: 14.95,
+                                borderWidth: 1,
+                                borderColor: "#7A003C",
+                                label: {
+                                    content: 'Mz = 43441',
+                                    enabled: true,
+                                    yAdjust: 50,
+                                    position: "top",
+                                    click(context) {
+                                        console.log(context);
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'N (mol)'
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'MW'
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            },
+        }
+
+        // Function 'updateChart' to update distribution type based on dropdown navigation value
+
+        var currentChart;
+
+        function updateChart() {
+            if (currentChart) { currentChart.destroy(); }
+
+            var determineChart = $("#chartType").val();
+            console.log(determineChart);
+
+            currentChart = new Chart(ctx, data[determineChart])
+        }
+
+        $('#chartType').on('change', updateChart)
+        updateChart();
+
+    </script>
+
+</body>
+
+</html>

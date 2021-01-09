@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Polymer Sciences: Polydispersity</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/0.5.7/chartjs-plugin-annotation.js"></script>
+    <script src="https://unpkg.com/mathjs/lib/browser/math.js"></script>
+</head>
+
+<body>
+
+    <!-- Header -->
+
+    <img src="https://static.wixstatic.com/media/c6776b_cfa98697877f47a58e56a8f9ea16737e~mv2.png"
+        style="float:right; width:25%; height: 25%">
+
+    <!-- Accept input for coefficient 'PDI' -->
+
+    <style>
+        fieldset {
+            display: inline-block;
+            font: 80% sans-serif;
+            margin-left: 1px;
+            margin-right: 1px;
+            padding-top: 0.75em;
+            padding-bottom: 0.75em;
+            padding-left: 0.75em;
+            padding-right: 0.75em;
+            border: none;
+        }
+
+        input[type=number] {
+            width: 100%;
+            padding: 10px 10px;
+            margin: 5px 0;
+            box-sizing: border-box;
+            border: 1px solid #7A003C;
+        }
+    </style>
+
+    <form id="PDI" action="">
+        <fieldset>
+            <p>
+                <label for="pdi">Polydispersity Index, <b><i>PDI</i></b> = </label><span id="polydis">4.43</span>
+                <input id="pdi" name="pdi" type="range" min="0.2" max="3.5" step="0.01" />
+            <p>
+                <b><i>M<sub>N</sub></i></b> = <span id="Mn">13681</span>
+                <b><i>M<sub>W</sub></i></b> = <span id="Mw">60652</span>
+                <b><i>M<sub>Z</sub></i></b> = <span id="Mz">147242</span>
+            </p>
+            </p>
+        </fieldset>
+    </form>
+
+    <!-- ChartJS 'Scatter'-->
+
+    <canvas id="myChart" width="800" height="450"></canvas>
+
+    <!-- Footer -->
+
+    <img src="https://static.wixstatic.com/media/c6776b_fd904ab717354645a26026a817af931a~mv2.png"
+        style="width:75%; height: 75%; padding-top: 25px;" />
+
+    <!-- ChartJS 'Scatter' JavaScript -->
+
+    <script type="text/javascript">
+
+        // Editable function -start-
+
+        var plotNew = new Chart(document.getElementById("myChart").getContext('2d'))
+        plotNew.destroy();
+
+        $('#PDI').on("click", (event) => {
+            if (event.which === 1) {
+                event.preventDefault();
+
+                const pdi = parseFloat($('#pdi').val());
+
+                let xInputs = [-5.0, -4.5, -4.0, -3.5, -3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
+                let MW = [100, 150, 225, 338, 506, 759, 1139, 1709, 2563, 3844, 5767, 8650, 12975, 19462, 29193, 43789, 65684, 98526, 147789, 221684, 332526]
+
+                // Normal Distribution
+                Fx = xInputs.map(x =>
+                    (1 / (pdi * Math.sqrt(2 * Math.PI))) * Math.exp((-0.5 * ((x) / pdi) ** 2)));
+
+                // Nmol for a normal distribution where N_multiplier = 100,000
+                Nmol = Fx.map(x => x * 100000);
+
+                // Number average molecular weight, Mn
+                Mn_num = math.dot(Nmol, MW);
+                Mn_den = math.sum(Nmol);
+                Mn = math.round((Mn_num / Mn_den), 0);
+                document.getElementById("Mn").innerHTML = Mn;
+
+                // Weight average molecular weight, Mw
+                MW2 = MW.map(x => x ** 2);
+                Mw_num = math.dot(Nmol, MW2);
+                Mw = math.round((Mw_num / Mn_num),0);
+                document.getElementById("Mw").innerHTML = Mw;
+
+                // Z-average molecular weight, Mz
+                MW3 = MW.map(x => x ** 3);
+                Mz_num = math.dot(Nmol, MW3);
+                Mz = math.round((Mz_num / Mw_num),0);
+                document.getElementById("Mz").innerHTML = Mz;
+
+                // Polydispersity Index, PDI
+                polydis = math.round((Mw / Mn), 2);
+                document.getElementById("polydis").innerHTML = polydis;
+                console.log(Mn, Mw, Mz, polydis);
+
+                // Editable function -end-
+
+                plot.destroy();
+                plotNew.destroy();
+
+                plotNew = new Chart(document.getElementById("myChart").getContext('2d'), {
+
+                    type: 'bar',
+                    data: {
+                        datasets: [{
+                            label: 'Bar',
+                            data: Nmol,
+                        }, {
+                            label: 'Line',
+                            data: Nmol,
+                            type: 'line',
+                            fill: false,
+                            borderColor: "#000000",
+                            borderWidth: 1
+                        }],
+                        labels: ["100",
+                            "150",
+                            "225",
+                            "338",
+                            "506",
+                            "759",
+                            "1139",
+                            "1709",
+                            "2563",
+                            "3844",
+                            "5767",
+                            "8650",
+                            "12975",
+                            "19462",
+                            "29193",
+                            "43789",
+                            "65684",
+                            "98526",
+                            "147789",
+                            "221684",
+                            "332526"]
+                    },
+                    options: {
+                        tooltips: { enabled: false },
+                        hover: { mode: null },
+                        animation: {
+                            duration: 0
+                        },
+                        scales: {
+                            yAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'N (mol)'
+                                },
+                                ticks: {
+                                    min: 0,
+                                    max: 200000
+                                }
+                            }],
+                            xAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'MW'
+                                }
+                            }]
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+            }
+        })
+
+        var plot = new Chart(document.getElementById("myChart").getContext('2d'), {
+
+            type: 'bar',
+            data: {
+                datasets: [{
+                    label: 'Bar',
+                    data: [245.1434173,
+                        586.5180125,
+                        1280.154404,
+                        2548.961276,
+                        4630.032108,
+                        7672.283642,
+                        11598.05543,
+                        15994.31305,
+                        20121.75636,
+                        23093.30347,
+                        24178.32002,
+                        23093.30347,
+                        20121.75636,
+                        15994.31305,
+                        11598.05543,
+                        7672.283642,
+                        4630.032108,
+                        2548.961276,
+                        1280.154404,
+                        586.5180125,
+                        245.1434173
+                    ],
+                }, {
+                    label: 'Line',
+                    data: [245.1434173,
+                        586.5180125,
+                        1280.154404,
+                        2548.961276,
+                        4630.032108,
+                        7672.283642,
+                        11598.05543,
+                        15994.31305,
+                        20121.75636,
+                        23093.30347,
+                        24178.32002,
+                        23093.30347,
+                        20121.75636,
+                        15994.31305,
+                        11598.05543,
+                        7672.283642,
+                        4630.032108,
+                        2548.961276,
+                        1280.154404,
+                        586.5180125,
+                        245.1434173
+                    ],
+                    type: 'line',
+                    fill: false,
+                    borderColor: "#000000",
+                    borderWidth: 1
+                }],
+                labels: ["100",
+                    "150",
+                    "225",
+                    "338",
+                    "506",
+                    "759",
+                    "1139",
+                    "1709",
+                    "2563",
+                    "3844",
+                    "5767",
+                    "8650",
+                    "12975",
+                    "19462",
+                    "29193",
+                    "43789",
+                    "65684",
+                    "98526",
+                    "147789",
+                    "221684",
+                    "332526"]
+            },
+            options: {
+                tooltips: { enabled: false },
+                hover: { mode: null },
+                animation: {
+                    duration: 0
+                },
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'N (mol)'
+                        },
+                        ticks: {
+                            min: 0,
+                            max: 200000
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'MW'
+                        }
+                    }]
+                },
+                legend: {
+                    display: false
+                }
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>

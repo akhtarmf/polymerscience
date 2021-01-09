@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Polymer Sciences: Mayo-Lewis</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/0.5.7/chartjs-plugin-annotation.js"></script>
+</head>
+
+<body>
+
+    <!-- Header -->
+
+    <img src="https://static.wixstatic.com/media/c6776b_cfa98697877f47a58e56a8f9ea16737e~mv2.png"
+        style="float:right; width:25%; height: 25%">
+
+    <!-- Accept input for coefficient 'r1' and 'r2' -->
+
+    <style>
+        fieldset {
+            display: inline-block;
+            font: 80% sans-serif;
+            margin-left: 1px;
+            margin-right: 1px;
+            padding-top: 0.75em;
+            padding-bottom: 0.75em;
+            padding-left: 0.75em;
+            padding-right: 0.75em;
+            border: none;
+        }
+
+        input[type=number] {
+            width: 100%;
+            padding: 10px 10px;
+            margin: 5px 0;
+            box-sizing: border-box;
+            border: 1px solid #7A003C;
+        }
+
+        input[type=text] {
+            width: 10%;
+            border: 0px solid #7A003C;
+        }
+    </style>
+
+    <form id="ratios" action="">
+        <fieldset>
+            <p>
+                <input id="r1" name="r1" type="range" min="0.01" max="10" step="0.01" onchange="document.getElementById('r1Value').value = this.value" />
+                <label for="r1">Reactivity Ratio, <i>r<sub>1</sub></i> = </label>
+                <input type="text" id="r1Value" placeholder= "5.00" value="">
+            </p><p>
+                <input id="r2" name="r2" type="range" min="0.01" max="10" step="0.01" onchange="document.getElementById('r2Value').value = this.value" />
+                <label for="r2">Reactivity Ratio, <i>r<sub>2</sub></i> = </label>
+                <input type="text" id="r2Value" placeholder= "5.00" value="">
+                <!-- <button id="submit" name="submit">Mayo-Lewis Model, <i>F<sub>1</sub></i></button> -->
+            </p>
+        </fieldset>
+    </form>
+
+    <!-- ChartJS 'Scatter'-->
+
+    <canvas id="myChart" width="800" height="450"></canvas>
+
+    <!-- Footer -->
+
+    <img src="https://static.wixstatic.com/media/c6776b_fd904ab717354645a26026a817af931a~mv2.png"
+        style="width:75%; height: 75%; padding-top: 25px;" />
+
+    <!-- ChartJS 'Scatter' JavaScript -->
+
+    <script type="text/javascript">
+
+        let dataPoints = [{
+            x: 0,
+            y: 0
+        }, {
+            x: 0.01,
+            y: 0.01
+        }, {
+            x: 0.02,
+            y: 0.02
+        }, {
+            x: 0.03,
+            y: 0.03
+        }, {
+            x: 0.04,
+            y: 0.04
+        }, {
+            x: 0.05,
+            y: 0.05
+        }, {
+            x: 0.06,
+            y: 0.06
+        }, {
+            x: 0.07,
+            y: 0.07
+        }, {
+            x: 0.08,
+            y: 0.08
+        }, {
+            x: 0.09,
+            y: 0.09
+        }, {
+            x: 0.10,
+            y: 0.10
+
+        }, {
+            x: 0.15,
+            y: 0.15
+        }, {
+            x: 0.20,
+            y: 0.20
+        }, {
+            x: 0.25,
+            y: 0.25
+        }, {
+            x: 0.30,
+            y: 0.30
+        }, {
+            x: 0.35,
+            y: 0.35
+        }, {
+            x: 0.40,
+            y: 0.40
+        }, {
+            x: 0.45,
+            y: 0.45
+        }, {
+            x: 0.50,
+            y: 0.50
+        }, {
+            x: 0.55,
+            y: 0.55
+        }, {
+            x: 0.60,
+            y: 0.60
+        }, {
+            x: 0.65,
+            y: 0.65
+        }, {
+            x: 0.70,
+            y: 0.70
+        }, {
+            x: 0.75,
+            y: 0.75
+        }, {
+            x: 0.80,
+            y: 0.80
+        }, {
+            x: 0.85,
+            y: 0.85
+        }, {
+            x: 0.90,
+            y: 0.90
+        }, {
+            x: 0.91,
+            y: 0.91
+        }, {
+            x: 0.92,
+            y: 0.92
+        }, {
+            x: 0.93,
+            y: 0.93
+        }, {
+            x: 0.94,
+            y: 0.94
+        }, {
+            x: 0.95,
+            y: 0.95
+        }, {
+            x: 0.96,
+            y: 0.96
+        }, {
+            x: 0.97,
+            y: 0.97
+        }, {
+            x: 0.98,
+            y: 0.98
+        }, {
+            x: 0.99,
+            y: 0.99
+        }, {
+            x: 1.00,
+            y: 1.00
+        }]
+
+        // Editable function -start-
+        $('#ratios').on("click", (event) => {
+            if (event.which === 1) {
+                event.preventDefault();
+
+                const r1 = parseFloat($('#r1').val());
+                const r2 = parseFloat($('#r2').val());
+
+                dataPoints = dataPoints.map(point => {
+                    point.x = parseFloat(point.x);
+                    const y = (r1 * point.x ** 2 + point.x * (1 - point.x)) / (r1 * point.x ** 2 + 2 * point.x * (1 - point.x) + r2 * (1 - point.x) ** 2);
+                    return {
+                        x: point.x,
+                        y: y
+                    };
+                });
+
+                console.log(dataPoints, r1, r2);
+
+                // Editable function -end-
+
+                new Chart(document.getElementById("myChart").getContext('2d'), {
+
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                            label: 'Reference',
+                            data: [{
+                                x: 0,
+                                y: 0
+                            }, {
+                                x: 0.05,
+                                y: 0.05
+                            }, {
+                                x: 0.10,
+                                y: 0.10
+
+                            }, {
+                                x: 0.15,
+                                y: 0.15
+                            }, {
+                                x: 0.20,
+                                y: 0.20
+                            }, {
+                                x: 0.25,
+                                y: 0.25
+                            }, {
+                                x: 0.30,
+                                y: 0.30
+                            }, {
+                                x: 0.35,
+                                y: 0.35
+                            }, {
+                                x: 0.40,
+                                y: 0.40
+                            }, {
+                                x: 0.45,
+                                y: 0.45
+                            }, {
+                                x: 0.50,
+                                y: 0.50
+                            }, {
+                                x: 0.55,
+                                y: 0.55
+                            }, {
+                                x: 0.60,
+                                y: 0.60
+                            }, {
+                                x: 0.65,
+                                y: 0.65
+                            }, {
+                                x: 0.70,
+                                y: 0.70
+                            }, {
+                                x: 0.75,
+                                y: 0.75
+                            }, {
+                                x: 0.80,
+                                y: 0.80
+                            }, {
+                                x: 0.85,
+                                y: 0.85
+                            }, {
+                                x: 0.90,
+                                y: 0.90
+                            }, {
+                                x: 0.95,
+                                y: 0.95
+                            }, {
+                                x: 1.00,
+                                y: 1.00
+                            }],
+                            fill: true,
+                            borderColor: "#7A003C",
+                            borderWidth: 0,
+                            pointRadius: 0,
+                            tension: 0,
+                            showLine: true
+                        }, {
+                            label: 'Line',
+                            data: dataPoints,
+                            fill: true,
+                            borderColor: "#000000",
+                            borderWidth: 1,
+                            pointRadius: 2,
+                            tension: 0,
+                            showLine: true
+                        }]
+                    },
+                    options: {
+                        animation: {
+                            duration: 0
+                        },
+                        scales: {
+                            yAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'F\u2081'
+                                },
+                                ticks: {
+                                    min: 0,
+                                    max: 1
+                                }
+                            }],
+                            xAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'f\u2081'
+                                }
+                            }]
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                });
+
+            }
+        })
+
+        new Chart(document.getElementById("myChart").getContext('2d'), {
+
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Line',
+                    data: dataPoints,
+                    fill: true,
+                    borderColor: "#7A003C",
+                    borderWidth: 0,
+                    pointRadius: 0,
+                    tension: 0,
+                    showLine: true
+                }]
+            },
+            options: {
+                animation: {
+                    duration: 0
+                },
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'F\u2081'
+                        },
+                        ticks: {
+                            min: 0,
+                            max: 1
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'f\u2081'
+                        }
+                    }]
+                },
+                legend: {
+                    display: false
+                }
+            },
+        });
+
+    </script>
+
+</body>
+
+</html>

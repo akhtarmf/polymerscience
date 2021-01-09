@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Polymer Science: Carothers</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/0.5.7/chartjs-plugin-annotation.js"></script>
+</head>
+
+<body>
+
+    <!-- Header -->
+
+    <img src="https://static.wixstatic.com/media/c6776b_cfa98697877f47a58e56a8f9ea16737e~mv2.png"
+        style="float:right; width:25%; height: 25%">
+
+    <!-- Accept input for coefficient 'r' -->
+
+    <style>
+        fieldset {
+            display: inline-block;
+            font: 80% sans-serif;
+            margin-left: 1px;
+            margin-right: 1px;
+            padding-top: 0.75em;
+            padding-bottom: 0.75em;
+            padding-left: 0.75em;
+            padding-right: 0.75em;
+            border: none;
+        }
+
+        input[type=number] {
+            width: 100%;
+            padding: 10px 10px;
+            margin: 5px 0;
+            box-sizing: border-box;
+            border: 1px solid #7A003C;
+        }
+    </style>
+
+    <form id="rValue" action="">
+        <fieldset>
+            <p>
+                <label for="r">Ratio of Reactant Monomers, <i>r</i></label>
+                <input id="r" name="r" type="number" min="0.0" max="1.0" step="0.01" placeholder="1.00" />
+            </p>
+        </fieldset>
+    </form>
+
+    <!-- ChartJS 'Scatter'-->
+
+    <canvas id="myChart" width="800" height="450"></canvas>
+
+    <!-- Footer -->
+
+    <img src="https://static.wixstatic.com/media/c6776b_fd904ab717354645a26026a817af931a~mv2.png"
+        style="width:75%; height: 75%; padding-top: 25px;" />
+
+    <!-- ChartJS 'Scatter' JavaScript -->
+
+    <script type="text/javascript">
+
+        let dataPoints = [{
+            x: 0.00,
+            y: 1.00
+        }, {
+            x: 0.20,
+            y: 1.25
+        }, {
+            x: 0.50,
+            y: 2.00
+        }, {
+            x: 0.60,
+            y: 2.50
+        }, {
+            x: 0.75,
+            y: 4.00
+        }, {
+            x: 0.80,
+            y: 5.00
+        }, {
+            x: 0.90,
+            y: 10.0
+        }, {
+            x: 0.91,
+            y: 11.111
+        }, {
+            x: 0.92,
+            y: 12.500
+        }, {
+            x: 0.93,
+            y: 14.286
+        }, {
+            x: 0.94,
+            y: 16.667
+        }, {
+            x: 0.95,
+            y: 20.000
+        }, {
+            x: 0.96,
+            y: 25.000
+        }, {
+            x: 0.97,
+            y: 33.333
+        }, {
+            x: 0.98,
+            y: 50.000
+        }, {
+            x: 0.99,
+            y: 100.000
+        }, {
+            x: 1.0,
+            y: 1000.000
+        }]
+
+        $('#r').on("keypress", (event) => {
+            if (event.which === 13) {
+                event.preventDefault();
+                const rValue = parseFloat(event.target.value);
+                dataPoints = dataPoints.map(point => {
+                    point.x = parseFloat(point.x);
+                    const y = (1 + rValue) / (1 + rValue - (2 * rValue * point.x));
+
+                    return {
+                        x: point.x,
+                        y: y
+                    };
+                });
+
+                new Chart(document.getElementById("myChart").getContext('2d'), {
+
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                            label: 'Line',
+                            data: dataPoints,
+                            fill: true,
+                            borderColor: "#000000",
+                            borderWidth: 1,
+                            pointRadius: 2,
+                            tension: 0,
+                            showLine: true
+                        }]
+                    },
+                    options: {
+                        animation: {
+                            duration: 0
+                        },
+                        scales: {
+                            yAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'X\u2099'
+                                },
+                                ticks: {
+                                    min: 0,
+                                    max: 250
+                                }
+                            }],
+                            xAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'p'
+                                }
+                            }]
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                });
+
+            }
+        })
+
+        new Chart(document.getElementById("myChart").getContext('2d'), {
+
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Line',
+                    data: dataPoints,
+                    fill: true,
+                    borderColor: "#000000",
+                    borderWidth: 1,
+                    pointRadius: 2,
+                    tension: 0,
+                    showLine: true
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'X\u2099'
+                        },
+                        ticks: {
+                            min: 0,
+                            max: 250
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'p'
+                        }
+                    }]
+                },
+                legend: {
+                    display: false
+                }
+            },
+        });
+
+    </script>
+
+</body>
+
+</html>
