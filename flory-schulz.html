@@ -66,93 +66,150 @@
 
     <script type="text/javascript">
 
+        var plotNew = new Chart(document.getElementById("myChart").getContext('2d'))
+        plotNew.destroy();
+
         let dataPoints = [{
             x: 0,
-            y: 111.1111111
+            y: 0.11111111
         }, {
             x: 1,
-            y: 100
+            y: 0.1
         }, {
             x: 2,
-            y: 90
+            y: 0.09
         }, {
             x: 3,
-            y: 81
+            y: 0.081
         }, {
             x: 4,
-            y: 72.9
+            y: 0.0729
         }, {
             x: 5,
-            y: 65.61
+            y: 0.06561
         }, {
             x: 6,
-            y: 59.049
+            y: 0.059049
         }, {
             x: 7,
-            y: 53.1441
+            y: 0.0531441
         }, {
             x: 8,
-            y: 47.82969
+            y: 0.04782969
         }, {
             x: 9,
-            y: 43.046721
+            y: 0.04304672
         }, {
             x: 10,
-            y: 38.7420489
+            y: 0.03874205
+        }, {
+            x: 11,
+            y: 0.03486784
+        }, {
+            x: 12,
+            y: 0.03138106
+        }, {
+            x: 13,
+            y: 0.02824295
+        }, {
+            x: 14,
+            y: 0.02541866
         }, {
             x: 15,
-            y: 22.87679245
+            y: 0.02287679
+        }, {
+            x: 16,
+            y: 0.02058911
+        }, {
+            x: 17,
+            y: 0.0185302
+        }, {
+            x: 18,
+            y: 0.01667718
+        }, {
+            x: 19,
+            y: 0.01500946
         }, {
             x: 20,
-            y: 13.50851718
+            y: 0.01350852
         }, {
             x: 25,
-            y: 7.976644308
+            y: 0.00797664
         }, {
             x: 30,
-            y: 4.710128697
+            y: 0.00471013
         }, {
             x: 35,
-            y: 2.781283894
+            y: 0.00278128
         }, {
             x: 40,
-            y: 1.642320327
+            y: 0.00164232
         }, {
             x: 45,
-            y: 0.96977373
+            y: 9.69774E-04
         }, {
             x: 50,
-            y: 0.57264169
+            y: 5.72642E-04
         }, {
             x: 55,
-            y: 0.338139191
+            y: 3.38139E-04
         }, {
             x: 60,
-            y: 0.199667811
+            y: 1.99668E-04
         }, {
             x: 65,
-            y: 0.117901846
+            y: 1.17902E-04
         }, {
             x: 70,
-            y: 0.069619861
+            y: 6.96199E-05
         }, {
             x: 75,
-            y: 0.041109832
+            y: 4.11098E-05
         }, {
             x: 80,
-            y: 0.024274945
+            y: 2.42749E-05
         }, {
             x: 85,
-            y: 0.014334112
+            y: 1.43341E-05
         }, {
             x: 90,
-            y: 0.00846415
+            y: 8.46415E-06
         }, {
             x: 95,
-            y: 0.004997996
+            y: 4.998E-06
         }, {
             x: 100,
-            y: 0.002951267
+            y: 2.95127E-06
+        }, {
+            x: 105,
+            y: 1.74269E-06
+        }, {
+            x: 110,
+            y: 1.02904E-06
+        }, {
+            x: 115,
+            y: 6.0764E-07
+        }, {
+            x: 120,
+            y: 3.58805E-07
+        }, {
+            x: 125,
+            y: 2.11871E-07
+        }, {
+            x: 130,
+            y: 1.25108E-07
+        }, {
+            x: 135,
+            y: 7.38748E-08
+        }, {
+            x: 140,
+            y: 4.36223E-08
+        }, {
+            x: 145,
+            y: 2.57585E-08
+        }, {
+            x: 150,
+            y: 1.52102E-08
         }]
 
         $('#p').on("keypress", (event) => {
@@ -161,7 +218,7 @@
                 const pValue = parseFloat(event.target.value);
                 dataPoints = dataPoints.map(point => {
                     point.x = parseFloat(point.x);
-                    const y = 10000 * pValue * ((1 - pValue) ** 2) * (pValue ** (point.x - 1));
+                    const y = ((1 - pValue) ** 1) * (pValue ** (point.x - 1));
 
                     return {
                         x: point.x,
@@ -171,7 +228,11 @@
 
                 console.log(dataPoints);
 
-                new Chart(document.getElementById("myChart").getContext('2d'), {
+                plot.destroy();
+                plotNew.destroy();
+
+                // Generated plot
+                plotNew = new Chart(document.getElementById("myChart").getContext('2d'), {
 
                     type: 'scatter',
                     data: {
@@ -187,6 +248,8 @@
                         }]
                     },
                     options: {
+                        tooltips: { enabled: false },
+                        hover: { mode: null },
                         animation: {
                             duration: 0
                         },
@@ -194,17 +257,21 @@
                             yAxes: [{
                                 scaleLabel: {
                                     display: true,
-                                    labelString: 'N\u1d62'
+                                    labelString: 'n\u2093'
                                 },
                                 ticks: {
                                     min: 0,
-                                    max: 200
+                                    max: 0.05
                                 }
                             }],
                             xAxes: [{
                                 scaleLabel: {
                                     display: true,
-                                    labelString: 'i'
+                                    labelString: 'x'
+                                },
+                                ticks: {
+                                    min: 0,
+                                    max: 150
                                 }
                             }]
                         },
@@ -217,7 +284,7 @@
             }
         })
 
-        new Chart(document.getElementById("myChart").getContext('2d'), {
+        var plot = new Chart(document.getElementById("myChart").getContext('2d'), {
 
             type: 'scatter',
             data: {
@@ -233,21 +300,30 @@
                 }]
             },
             options: {
+                tooltips: { enabled: false },
+                hover: { mode: null },
+                animation: {
+                    duration: 0
+                },
                 scales: {
                     yAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: 'N\u1d62'
+                            labelString: 'n\u2093'
                         },
                         ticks: {
                             min: 0,
-                            max: 200
+                            max: 0.05
                         }
                     }],
                     xAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: 'i'
+                            labelString: 'x'
+                        },
+                        ticks: {
+                            min: 0,
+                            max: 150
                         }
                     }]
                 },
