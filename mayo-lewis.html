@@ -52,13 +52,16 @@
     <form id="ratios" action="">
         <fieldset>
             <p>
-                <input id="r1" name="r1" type="range" min="0.01" max="10" step="0.01" onchange="document.getElementById('r1Value').value = this.value" />
+                <input id="r1" name="r1" type="range" min="0.01" max="10" step="0.01"
+                    onchange="document.getElementById('r1Value').value = this.value" />
                 <label for="r1">Reactivity Ratio, <i>r<sub>1</sub></i> = </label>
-                <input type="text" id="r1Value" placeholder= "5.00" value="">
-            </p><p>
-                <input id="r2" name="r2" type="range" min="0.01" max="10" step="0.01" onchange="document.getElementById('r2Value').value = this.value" />
+                <input type="text" id="r1Value" placeholder="5.00" value="">
+            </p>
+            <p>
+                <input id="r2" name="r2" type="range" min="0.01" max="10" step="0.01"
+                    onchange="document.getElementById('r2Value').value = this.value" />
                 <label for="r2">Reactivity Ratio, <i>r<sub>2</sub></i> = </label>
-                <input type="text" id="r2Value" placeholder= "5.00" value="">
+                <input type="text" id="r2Value" placeholder="5.00" value="">
                 <!-- <button id="submit" name="submit">Mayo-Lewis Model, <i>F<sub>1</sub></i></button> -->
             </p>
         </fieldset>
@@ -76,6 +79,9 @@
     <!-- ChartJS 'Scatter' JavaScript -->
 
     <script type="text/javascript">
+
+        var plotNew = new Chart(document.getElementById("myChart").getContext('2d'))
+        plotNew.destroy();
 
         let dataPoints = [{
             x: 0,
@@ -212,7 +218,11 @@
 
                 // Editable function -end-
 
-                new Chart(document.getElementById("myChart").getContext('2d'), {
+                plot.destroy();
+                plotNew.destroy();
+
+                // Generated plot
+                plotNew = new Chart(document.getElementById("myChart").getContext('2d'), {
 
                     type: 'scatter',
                     data: {
@@ -301,6 +311,8 @@
                         }]
                     },
                     options: {
+                        tooltips: { enabled: false },
+                        hover: { mode: null },
                         animation: {
                             duration: 0
                         },
@@ -331,7 +343,7 @@
             }
         })
 
-        new Chart(document.getElementById("myChart").getContext('2d'), {
+        var plot = new Chart(document.getElementById("myChart").getContext('2d'), {
 
             type: 'scatter',
             data: {
@@ -347,6 +359,8 @@
                 }]
             },
             options: {
+                tooltips: { enabled: false },
+                hover: { mode: null },
                 animation: {
                     duration: 0
                 },
