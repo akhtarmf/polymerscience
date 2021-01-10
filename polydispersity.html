@@ -102,13 +102,13 @@
                 // Weight average molecular weight, Mw
                 MW2 = MW.map(x => x ** 2);
                 Mw_num = math.dot(Nmol, MW2);
-                Mw = math.round((Mw_num / Mn_num),0);
+                Mw = math.round((Mw_num / Mn_num), 0);
                 document.getElementById("Mw").innerHTML = Mw;
 
                 // Z-average molecular weight, Mz
                 MW3 = MW.map(x => x ** 3);
                 Mz_num = math.dot(Nmol, MW3);
-                Mz = math.round((Mz_num / Mw_num),0);
+                Mz = math.round((Mz_num / Mw_num), 0);
                 document.getElementById("Mz").innerHTML = Mz;
 
                 // Polydispersity Index, PDI
@@ -121,6 +121,7 @@
                 plot.destroy();
                 plotNew.destroy();
 
+                // Generated plot
                 plotNew = new Chart(document.getElementById("myChart").getContext('2d'), {
 
                     type: 'bar',
@@ -190,6 +191,7 @@
             }
         })
 
+        // Initial plot
         var plot = new Chart(document.getElementById("myChart").getContext('2d'), {
 
             type: 'bar',
