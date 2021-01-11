@@ -11,6 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/0.5.7/chartjs-plugin-annotation.js"></script>
+    <script src="https://unpkg.com/mathjs/lib/browser/math.js"></script>
 </head>
 
 <body>
@@ -47,8 +48,9 @@
     <form id="pValue" action="">
         <fieldset>
             <p>
-                <label for="p">Extent of Reaction, <i>p</i></label>
-                <input id="p" name="p" type="number" min="0" max="1" step="0.01" placeholder="0.900" />
+                <label for="p">Extent of Reaction, (0.00 > <i>p</i> ≥ 1.00)</label>
+                <input id="p" name="p" type="number" min="0.005" max="1" step="0.005" placeholder="0.900"
+                    onkeydown="return false" value='0.900' />
             </p>
         </fieldset>
     </form>
@@ -70,155 +72,200 @@
         plotNew.destroy();
 
         let dataPoints = [{
-            x: 0,
-            y: 0.11111111
+            x: 0.0,
+            y: 0
         }, {
-            x: 1,
-            y: 0.1
+            x: 0.5,
+            y: 0.005270463
         }, {
-            x: 2,
-            y: 0.09
+            x: 1.0,
+            y: 0.01
         }, {
-            x: 3,
-            y: 0.081
+            x: 1.5,
+            y: 0.014230249
         }, {
-            x: 4,
-            y: 0.0729
+            x: 2.0,
+            y: 0.018
         }, {
-            x: 5,
-            y: 0.06561
+            x: 2.5,
+            y: 0.021345374
         }, {
-            x: 6,
-            y: 0.059049
+            x: 3.0,
+            y: 0.0243
         }, {
-            x: 7,
-            y: 0.0531441
+            x: 3.5,
+            y: 0.026895171
         }, {
-            x: 8,
-            y: 0.04782969
+            x: 4.0,
+            y: 0.02916
         }, {
-            x: 9,
-            y: 0.04304672
+            x: 4.5,
+            y: 0.031121556
         }, {
-            x: 10,
-            y: 0.03874205
+            x: 5.0,
+            y: 0.032805
         }, {
-            x: 11,
-            y: 0.03486784
+            x: 5.5,
+            y: 0.034233711
         }, {
-            x: 12,
-            y: 0.03138106
+            x: 6.0,
+            y: 0.0354294
         }, {
-            x: 13,
-            y: 0.02824295
+            x: 6.5,
+            y: 0.03641222
         }, {
-            x: 14,
-            y: 0.02541866
+            x: 7.0,
+            y: 0.03720087
         }, {
-            x: 15,
-            y: 0.02287679
+            x: 7.5,
+            y: 0.03781269
         }, {
-            x: 16,
-            y: 0.02058911
+            x: 8.0,
+            y: 0.038263752
         }, {
-            x: 17,
-            y: 0.0185302
+            x: 8.5,
+            y: 0.038568944
         }, {
-            x: 18,
-            y: 0.01667718
+            x: 9.0,
+            y: 0.038742049
         }, {
-            x: 19,
-            y: 0.01500946
+            x: 9.5,
+            y: 0.03879582
         }, {
-            x: 20,
-            y: 0.01350852
+            x: 10.0,
+            y: 0.038742049
+        }, {
+            x: 10.5,
+            y: 0.038591631
+        }, {
+            x: 11.0,
+            y: 0.038354628
+        }, {
+            x: 11.5,
+            y: 0.038040322
+        }, {
+            x: 12.0,
+            y: 0.037657272
+        }, {
+            x: 12.5,
+            y: 0.037213359
+        }, {
+            x: 13.0,
+            y: 0.03671584
+        }, {
+            x: 13.5,
+            y: 0.036171385
+        }, {
+            x: 14.0,
+            y: 0.035586122
+        }, {
+            x: 14.5,
+            y: 0.034965672
+        }, {
+            x: 15.0,
+            y: 0.034315189
+        }, {
+            x: 15.5,
+            y: 0.033639388
+        }, {
+            x: 16.0,
+            y: 0.032942581
+        }, {
+            x: 16.5,
+            y: 0.032228704
+        }, {
+            x: 17.0,
+            y: 0.031501343
+        }, {
+            x: 17.5,
+            y: 0.030763763
+        }, {
+            x: 18.0,
+            y: 0.030018927
+        }, {
+            x: 18.5,
+            y: 0.029269523
+        }, {
+            x: 19.0,
+            y: 0.028517981
+        }, {
+            x: 19.5,
+            y: 0.027766493
+        }, {
+            x: 20.0,
+            y: 0.027017034
         }, {
             x: 25,
-            y: 0.00797664
+            y: 0.019941611
         }, {
             x: 30,
-            y: 0.00471013
+            y: 0.014130386
         }, {
             x: 35,
-            y: 0.00278128
+            y: 0.009734494
         }, {
             x: 40,
-            y: 0.00164232
+            y: 0.006569281
         }, {
             x: 45,
-            y: 9.69774E-04
+            y: 0.004363982
         }, {
             x: 50,
-            y: 5.72642E-04
-        }, {
-            x: 55,
-            y: 3.38139E-04
+            y: 0.002863208
         }, {
             x: 60,
-            y: 1.99668E-04
-        }, {
-            x: 65,
-            y: 1.17902E-04
+            y: 0.001198007
         }, {
             x: 70,
-            y: 6.96199E-05
-        }, {
-            x: 75,
-            y: 4.11098E-05
+            y: 0.000487339
         }, {
             x: 80,
-            y: 2.42749E-05
-        }, {
-            x: 85,
-            y: 1.43341E-05
+            y: 0.0001942
         }, {
             x: 90,
-            y: 8.46415E-06
-        }, {
-            x: 95,
-            y: 4.998E-06
+            y: 7.61773E-05
         }, {
             x: 100,
-            y: 2.95127E-06
-        }, {
-            x: 105,
-            y: 1.74269E-06
+            y: 2.95127E-05
         }, {
             x: 110,
-            y: 1.02904E-06
-        }, {
-            x: 115,
-            y: 6.0764E-07
+            y: 1.13195E-05
         }, {
             x: 120,
-            y: 3.58805E-07
-        }, {
-            x: 125,
-            y: 2.11871E-07
+            y: 4.30566E-06
         }, {
             x: 130,
-            y: 1.25108E-07
-        }, {
-            x: 135,
-            y: 7.38748E-08
+            y: 1.6264E-06
         }, {
             x: 140,
-            y: 4.36223E-08
-        }, {
-            x: 145,
-            y: 2.57585E-08
+            y: 6.10713E-07
         }, {
             x: 150,
-            y: 1.52102E-08
+            y: 2.28152E-07
+        }, {
+            x: 160,
+            y: 8.48553E-08
+        }, {
+            x: 170,
+            y: 3.14364E-08
+        }, {
+            x: 180,
+            y: 1.1606E-08
+        }, {
+            x: 190,
+            y: 4.27157E-09
+        }, {
+            x: 200,
+            y: 1.5678E-09
         }]
 
-        $('#p').on("keypress", (event) => {
-            if (event.which === 13) {
+        $('#p').on("click", (event) => {
+            if (event.which === 1) {
                 event.preventDefault();
                 const pValue = parseFloat(event.target.value);
                 dataPoints = dataPoints.map(point => {
                     point.x = parseFloat(point.x);
-                    const y = ((1 - pValue) ** 1) * (pValue ** (point.x - 1));
+                    const y = math.round((point.x * ((1 - pValue) ** 2) * (pValue ** (point.x - 1))), 5);
 
                     return {
                         x: point.x,
@@ -248,8 +295,8 @@
                         }]
                     },
                     options: {
-                        tooltips: { enabled: false },
-                        hover: { mode: null },
+                        tooltips: { enabled: true },
+                        // hover: { mode: null },
                         animation: {
                             duration: 0
                         },
@@ -259,10 +306,10 @@
                                     display: true,
                                     labelString: 'n\u2093'
                                 },
-                                ticks: {
-                                    min: 0,
-                                    max: 0.05
-                                }
+                                // ticks: {
+                                //     min: 0,
+                                //     max: 0.05
+                                // }
                             }],
                             xAxes: [{
                                 scaleLabel: {
@@ -300,8 +347,8 @@
                 }]
             },
             options: {
-                tooltips: { enabled: false },
-                hover: { mode: null },
+                tooltips: { enabled: true },
+                // hover: { mode: null },
                 animation: {
                     duration: 0
                 },
@@ -311,10 +358,10 @@
                             display: true,
                             labelString: 'n\u2093'
                         },
-                        ticks: {
-                            min: 0,
-                            max: 0.05
-                        }
+                        // ticks: {
+                        //     min: 0,
+                        //     max: 0.05
+                        // }
                     }],
                     xAxes: [{
                         scaleLabel: {
