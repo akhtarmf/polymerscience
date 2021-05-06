@@ -71,129 +71,33 @@
         var plotNew = new Chart(document.getElementById("myChart").getContext('2d'))
         plotNew.destroy();
 
-        let dataPoints = [{
-            x: 0.00,
-            y: 1.00
-        }, {
-            x: 0.05,
-            y: 1.00
-        }, {
-            x: 0.10,
-            y: 1.00
-        }, {
-            x: 0.15,
-            y: 1.00
-        }, {
-            x: 0.20,
-            y: 1.00
-        }, {
-            x: 0.25,
-            y: 1.00
-        }, {
-            x: 0.30,
-            y: 1.00
-        }, {
-            x: 0.40,
-            y: 1.00
-        }, {
-            x: 0.45,
-            y: 1.00
-        }, {
-            x: 0.50,
-            y: 1.00
-        }, {
-            x: 0.55,
-            y: 1.00
-        }, {
-            x: 0.60,
-            y: 1.00
-        }, {
-            x: 0.65,
-            y: 1.00
-        }, {
-            x: 0.70,
-            y: 1.00
-        }, {
-            x: 0.75,
-            y: 1.00
-        }, {
-            x: 0.80,
-            y: 1.00
-        }, {
-            x: 0.81,
-            y: 1.00
-        }, {
-            x: 0.82,
-            y: 1.00
-        }, {
-            x: 0.83,
-            y: 1.00
-        }, {
-            x: 0.84,
-            y: 1.00
-        }, {
-            x: 0.85,
-            y: 1.00
-        }, {
-            x: 0.86,
-            y: 1.00
-        }, {
-            x: 0.87,
-            y: 1.00
-        }, {
-            x: 0.88,
-            y: 1.00
-        }, {
-            x: 0.89,
-            y: 1.00
-        }, {
-            x: 0.90,
-            y: 1.00
-        }, {
-            x: 0.91,
-            y: 1.00
-        }, {
-            x: 0.92,
-            y: 1.00
-        }, {
-            x: 0.93,
-            y: 1.00
-        }, {
-            x: 0.94,
-            y: 1.00
-        }, {
-            x: 0.95,
-            y: 1.00
-        }, {
-            x: 0.96,
-            y: 1.00
-        }, {
-            x: 0.97,
-            y: 1.00
-        }, {
-            x: 0.98,
-            y: 1.00
-        }, {
-            x: 0.99,
-            y: 1.00
-        }, {
-            x: 0.9999,
-            y: 1.00
-        }]
+        let dataPoints = generateDataPoints(0, 0.001)
+
+        function generateDataPoints(rValue, xIncrements) {
+            const dataPoints = [];
+            let y = 0;
+            let x = 0;
+            let counter = 0;
+
+            let xLimit = 0.999
+
+            while (x <= xLimit) {
+                x = counter * xIncrements;
+                y = math.round(((1 + rValue) / (1 + rValue - (2 * rValue * x))), 5);
+
+                dataPoints.push({ x, y })
+                counter++;
+            }
+
+            return dataPoints;
+        }
 
         $('#r').on("click", (event) => {
             if (event.which === 1) {
                 event.preventDefault();
                 const rValue = parseFloat(event.target.value);
-                dataPoints = dataPoints.map(point => {
-                    point.x = parseFloat(point.x);
-                    const y = math.round(((1 + rValue) / (1 + rValue - (2 * rValue * point.x))),5);
 
-                    return {
-                        x: point.x,
-                        y: y
-                    };
-                });
+                dataPoints = generateDataPoints(rValue, 0.001)
 
                 plot.destroy();
                 plotNew.destroy();
@@ -209,14 +113,13 @@
                             fill: true,
                             borderColor: "#000000",
                             borderWidth: 1,
-                            pointRadius: 2,
+                            pointRadius: 1,
                             tension: 0,
                             showLine: true
                         }]
                     },
                     options: {
                         tooltips: { enabled: true },
-                        // hover: { mode: null },
                         animation: {
                             duration: 0
                         },
@@ -229,10 +132,6 @@
                                     display: true,
                                     labelString: 'X\u2099'
                                 },
-                                // ticks: {
-                                //     min: 0,
-                                //     max: 200
-                                // }
                             }],
                             xAxes: [{
                                 scaleLabel: {
@@ -261,14 +160,13 @@
                     fill: true,
                     borderColor: "#000000",
                     borderWidth: 1,
-                    pointRadius: 2,
+                    pointRadius: 1,
                     tension: 0,
                     showLine: true
                 }]
             },
             options: {
                 tooltips: { enabled: true },
-                // hover: { mode: null },
                 animation: {
                     duration: 0
                 },
@@ -278,10 +176,6 @@
                             display: true,
                             labelString: 'X\u2099'
                         },
-                        // ticks: {
-                        //     min: 0,
-                        //     max: 200
-                        // }
                     }],
                     xAxes: [{
                         scaleLabel: {
