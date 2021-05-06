@@ -71,207 +71,33 @@
         var plotNew = new Chart(document.getElementById("myChart").getContext('2d'))
         plotNew.destroy();
 
-        let dataPoints = [{
-            x: 0.0,
-            y: 0
-        }, {
-            x: 0.5,
-            y: 0.005270463
-        }, {
-            x: 1.0,
-            y: 0.01
-        }, {
-            x: 1.5,
-            y: 0.014230249
-        }, {
-            x: 2.0,
-            y: 0.018
-        }, {
-            x: 2.5,
-            y: 0.021345374
-        }, {
-            x: 3.0,
-            y: 0.0243
-        }, {
-            x: 3.5,
-            y: 0.026895171
-        }, {
-            x: 4.0,
-            y: 0.02916
-        }, {
-            x: 4.5,
-            y: 0.031121556
-        }, {
-            x: 5.0,
-            y: 0.032805
-        }, {
-            x: 5.5,
-            y: 0.034233711
-        }, {
-            x: 6.0,
-            y: 0.0354294
-        }, {
-            x: 6.5,
-            y: 0.03641222
-        }, {
-            x: 7.0,
-            y: 0.03720087
-        }, {
-            x: 7.5,
-            y: 0.03781269
-        }, {
-            x: 8.0,
-            y: 0.038263752
-        }, {
-            x: 8.5,
-            y: 0.038568944
-        }, {
-            x: 9.0,
-            y: 0.038742049
-        }, {
-            x: 9.5,
-            y: 0.03879582
-        }, {
-            x: 10.0,
-            y: 0.038742049
-        }, {
-            x: 10.5,
-            y: 0.038591631
-        }, {
-            x: 11.0,
-            y: 0.038354628
-        }, {
-            x: 11.5,
-            y: 0.038040322
-        }, {
-            x: 12.0,
-            y: 0.037657272
-        }, {
-            x: 12.5,
-            y: 0.037213359
-        }, {
-            x: 13.0,
-            y: 0.03671584
-        }, {
-            x: 13.5,
-            y: 0.036171385
-        }, {
-            x: 14.0,
-            y: 0.035586122
-        }, {
-            x: 14.5,
-            y: 0.034965672
-        }, {
-            x: 15.0,
-            y: 0.034315189
-        }, {
-            x: 15.5,
-            y: 0.033639388
-        }, {
-            x: 16.0,
-            y: 0.032942581
-        }, {
-            x: 16.5,
-            y: 0.032228704
-        }, {
-            x: 17.0,
-            y: 0.031501343
-        }, {
-            x: 17.5,
-            y: 0.030763763
-        }, {
-            x: 18.0,
-            y: 0.030018927
-        }, {
-            x: 18.5,
-            y: 0.029269523
-        }, {
-            x: 19.0,
-            y: 0.028517981
-        }, {
-            x: 19.5,
-            y: 0.027766493
-        }, {
-            x: 20.0,
-            y: 0.027017034
-        }, {
-            x: 25,
-            y: 0.019941611
-        }, {
-            x: 30,
-            y: 0.014130386
-        }, {
-            x: 35,
-            y: 0.009734494
-        }, {
-            x: 40,
-            y: 0.006569281
-        }, {
-            x: 45,
-            y: 0.004363982
-        }, {
-            x: 50,
-            y: 0.002863208
-        }, {
-            x: 60,
-            y: 0.001198007
-        }, {
-            x: 70,
-            y: 0.000487339
-        }, {
-            x: 80,
-            y: 0.0001942
-        }, {
-            x: 90,
-            y: 7.61773E-05
-        }, {
-            x: 100,
-            y: 2.95127E-05
-        }, {
-            x: 110,
-            y: 1.13195E-05
-        }, {
-            x: 120,
-            y: 4.30566E-06
-        }, {
-            x: 130,
-            y: 1.6264E-06
-        }, {
-            x: 140,
-            y: 6.10713E-07
-        }, {
-            x: 150,
-            y: 2.28152E-07
-        }, {
-            x: 160,
-            y: 8.48553E-08
-        }, {
-            x: 170,
-            y: 3.14364E-08
-        }, {
-            x: 180,
-            y: 1.1606E-08
-        }, {
-            x: 190,
-            y: 4.27157E-09
-        }, {
-            x: 200,
-            y: 1.5678E-09
-        }]
+        let dataPoints = generateDataPoints(0.900, 0.05)
+
+        function generateDataPoints(pValue, xIncrements) {
+            const dataPoints = [];
+            let y = 0;
+            let x = 0;
+            let counter = 0;
+
+            let xLimit = 200
+
+            while (x <= xLimit) {
+                x = counter * xIncrements;
+                y = math.round((x * ((1 - pValue) ** 2) * (pValue ** (x - 1))), 5);
+
+                dataPoints.push({ x, y })
+                counter++;
+            }
+
+            return dataPoints;
+        }
 
         $('#p').on("click", (event) => {
             if (event.which === 1) {
                 event.preventDefault();
                 const pValue = parseFloat(event.target.value);
-                dataPoints = dataPoints.map(point => {
-                    point.x = parseFloat(point.x);
-                    const y = math.round((point.x * ((1 - pValue) ** 2) * (pValue ** (point.x - 1))), 5);
 
-                    return {
-                        x: point.x,
-                        y: y
-                    };
-                });
+                dataPoints = generateDataPoints(pValue, 0.05);
 
                 console.log(dataPoints);
 
@@ -289,14 +115,13 @@
                             fill: true,
                             borderColor: "#000000",
                             borderWidth: 1,
-                            pointRadius: 2,
+                            pointRadius: 1,
                             tension: 0,
                             showLine: true
                         }]
                     },
                     options: {
                         tooltips: { enabled: true },
-                        // hover: { mode: null },
                         animation: {
                             duration: 0
                         },
@@ -304,12 +129,8 @@
                             yAxes: [{
                                 scaleLabel: {
                                     display: true,
-                                    labelString: 'n\u2093'
+                                    labelString: 'w\u2093'
                                 },
-                                // ticks: {
-                                //     min: 0,
-                                //     max: 0.05
-                                // }
                             }],
                             xAxes: [{
                                 scaleLabel: {
@@ -318,7 +139,7 @@
                                 },
                                 ticks: {
                                     min: 0,
-                                    max: 150
+                                    max: 200
                                 }
                             }]
                         },
@@ -341,14 +162,13 @@
                     fill: true,
                     borderColor: "#000000",
                     borderWidth: 1,
-                    pointRadius: 2,
+                    pointRadius: 1,
                     tension: 0,
                     showLine: true
                 }]
             },
             options: {
                 tooltips: { enabled: true },
-                // hover: { mode: null },
                 animation: {
                     duration: 0
                 },
@@ -356,12 +176,8 @@
                     yAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: 'n\u2093'
+                            labelString: 'w\u2093'
                         },
-                        // ticks: {
-                        //     min: 0,
-                        //     max: 0.05
-                        // }
                     }],
                     xAxes: [{
                         scaleLabel: {
@@ -370,7 +186,7 @@
                         },
                         ticks: {
                             min: 0,
-                            max: 150
+                            max: 200
                         }
                     }]
                 },
