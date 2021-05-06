@@ -83,119 +83,26 @@
         var plotNew = new Chart(document.getElementById("myChart").getContext('2d'))
         plotNew.destroy();
 
-        let dataPoints = [{
-            x: 0,
-            y: 0
-        }, {
-            x: 0.01,
-            y: 0.01
-        }, {
-            x: 0.02,
-            y: 0.02
-        }, {
-            x: 0.03,
-            y: 0.03
-        }, {
-            x: 0.04,
-            y: 0.04
-        }, {
-            x: 0.05,
-            y: 0.05
-        }, {
-            x: 0.06,
-            y: 0.06
-        }, {
-            x: 0.07,
-            y: 0.07
-        }, {
-            x: 0.08,
-            y: 0.08
-        }, {
-            x: 0.09,
-            y: 0.09
-        }, {
-            x: 0.10,
-            y: 0.10
+        let dataPoints = generateDataPoints(5, 5, 0.001)
 
-        }, {
-            x: 0.15,
-            y: 0.15
-        }, {
-            x: 0.20,
-            y: 0.20
-        }, {
-            x: 0.25,
-            y: 0.25
-        }, {
-            x: 0.30,
-            y: 0.30
-        }, {
-            x: 0.35,
-            y: 0.35
-        }, {
-            x: 0.40,
-            y: 0.40
-        }, {
-            x: 0.45,
-            y: 0.45
-        }, {
-            x: 0.50,
-            y: 0.50
-        }, {
-            x: 0.55,
-            y: 0.55
-        }, {
-            x: 0.60,
-            y: 0.60
-        }, {
-            x: 0.65,
-            y: 0.65
-        }, {
-            x: 0.70,
-            y: 0.70
-        }, {
-            x: 0.75,
-            y: 0.75
-        }, {
-            x: 0.80,
-            y: 0.80
-        }, {
-            x: 0.85,
-            y: 0.85
-        }, {
-            x: 0.90,
-            y: 0.90
-        }, {
-            x: 0.91,
-            y: 0.91
-        }, {
-            x: 0.92,
-            y: 0.92
-        }, {
-            x: 0.93,
-            y: 0.93
-        }, {
-            x: 0.94,
-            y: 0.94
-        }, {
-            x: 0.95,
-            y: 0.95
-        }, {
-            x: 0.96,
-            y: 0.96
-        }, {
-            x: 0.97,
-            y: 0.97
-        }, {
-            x: 0.98,
-            y: 0.98
-        }, {
-            x: 0.99,
-            y: 0.99
-        }, {
-            x: 1.00,
-            y: 1.00
-        }]
+        function generateDataPoints(r1, r2, xIncrements) {
+            const dataPoints = [];
+            let y = 0;
+            let x = 0;
+            let counter = 0;
+
+            let xLimit = 1.00
+
+            while (x <= xLimit) {
+                x = counter * xIncrements;
+                y = (r1 * x ** 2 + x * (1 - x)) / (r1 * x ** 2 + 2 * x * (1 - x) + r2 * (1 - x) ** 2);
+
+                dataPoints.push({ x, y })
+                counter++;
+            }
+
+            return dataPoints;
+        }
 
         // Editable function -start-
         $('#ratios').on("click", (event) => {
@@ -205,14 +112,7 @@
                 const r1 = parseFloat($('#r1').val());
                 const r2 = parseFloat($('#r2').val());
 
-                dataPoints = dataPoints.map(point => {
-                    point.x = parseFloat(point.x);
-                    const y = (r1 * point.x ** 2 + point.x * (1 - point.x)) / (r1 * point.x ** 2 + 2 * point.x * (1 - point.x) + r2 * (1 - point.x) ** 2);
-                    return {
-                        x: point.x,
-                        y: y
-                    };
-                });
+                dataPoints = generateDataPoints(r1, r2, 0.001);
 
                 console.log(dataPoints, r1, r2);
 
@@ -305,14 +205,13 @@
                             fill: true,
                             borderColor: "#000000",
                             borderWidth: 1,
-                            pointRadius: 2,
+                            pointRadius: 1,
                             tension: 0,
                             showLine: true
                         }]
                     },
                     options: {
                         tooltips: { enabled: true },
-                        // hover: { mode: null },
                         animation: {
                             duration: 0
                         },
@@ -331,6 +230,10 @@
                                 scaleLabel: {
                                     display: true,
                                     labelString: 'f\u2081'
+                                },
+                                ticks: {
+                                    min: 0,
+                                    max: 1
                                 }
                             }]
                         },
@@ -348,19 +251,91 @@
             type: 'scatter',
             data: {
                 datasets: [{
-                    label: 'Line',
-                    data: dataPoints,
+                    label: 'Reference',
+                    data: [{
+                        x: 0,
+                        y: 0
+                    }, {
+                        x: 0.05,
+                        y: 0.05
+                    }, {
+                        x: 0.10,
+                        y: 0.10
+
+                    }, {
+                        x: 0.15,
+                        y: 0.15
+                    }, {
+                        x: 0.20,
+                        y: 0.20
+                    }, {
+                        x: 0.25,
+                        y: 0.25
+                    }, {
+                        x: 0.30,
+                        y: 0.30
+                    }, {
+                        x: 0.35,
+                        y: 0.35
+                    }, {
+                        x: 0.40,
+                        y: 0.40
+                    }, {
+                        x: 0.45,
+                        y: 0.45
+                    }, {
+                        x: 0.50,
+                        y: 0.50
+                    }, {
+                        x: 0.55,
+                        y: 0.55
+                    }, {
+                        x: 0.60,
+                        y: 0.60
+                    }, {
+                        x: 0.65,
+                        y: 0.65
+                    }, {
+                        x: 0.70,
+                        y: 0.70
+                    }, {
+                        x: 0.75,
+                        y: 0.75
+                    }, {
+                        x: 0.80,
+                        y: 0.80
+                    }, {
+                        x: 0.85,
+                        y: 0.85
+                    }, {
+                        x: 0.90,
+                        y: 0.90
+                    }, {
+                        x: 0.95,
+                        y: 0.95
+                    }, {
+                        x: 1.00,
+                        y: 1.00
+                    }],
                     fill: true,
                     borderColor: "#7A003C",
                     borderWidth: 0,
                     pointRadius: 0,
                     tension: 0,
                     showLine: true
+                }, {
+                    label: 'Line',
+                    data: dataPoints,
+                    fill: true,
+                    borderColor: "#000000",
+                    borderWidth: 1,
+                    pointRadius: 1,
+                    tension: 0,
+                    showLine: true
                 }]
             },
             options: {
                 tooltips: { enabled: true },
-                // hover: { mode: null },
                 animation: {
                     duration: 0
                 },
@@ -379,6 +354,10 @@
                         scaleLabel: {
                             display: true,
                             labelString: 'f\u2081'
+                        },
+                        ticks: {
+                            min: 0,
+                            max: 1
                         }
                     }]
                 },
